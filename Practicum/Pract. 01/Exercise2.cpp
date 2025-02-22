@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+const double EPS = 1e-9;
 
 struct Point {
 	int x;
@@ -12,7 +13,7 @@ struct Point {
 		std::cout << "(" << x << ", " << y << ")";
 	}
 
-	double getdistanceToCenter() const {
+	double getDistanceToCenter() const {
 		return sqrt(x * x + y * y);
 	}
 };
@@ -69,9 +70,9 @@ struct Triangle {
 		double sideB = sideCA();
 		double sideC = sideAB();
 
-		bool abEqual = sideA == sideB;
-		bool bcEqual = sideB == sideC;
-		bool acEqual = sideA == sideC;
+		bool abEqual = (std::abs(sideA - sideB) < EPS);
+		bool bcEqual = (std::abs(sideB - sideC) < EPS);
+		bool acEqual = (std::abs(sideA - sideC) < EPS);
 
 		if (abEqual && bcEqual && acEqual) {
 			return Equilateral;
