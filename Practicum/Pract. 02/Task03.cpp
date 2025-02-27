@@ -30,19 +30,8 @@ size_t getNumbersCount(const char * fileName) {
         }
     }
 
+    ifs.close();
     return size;
-}
-
-void clearFileContent(const char * fileName) {
-    std::ofstream ofs(fileName);
-
-    if (!ofs.is_open()) {
-        std::cout << "Something went wrong";
-        return;
-    }
-
-    ofs.seekp(std::ios::out | std::ios::trunc); // Clear file
-
 }
 
 bool ascending(int a, int b) {
@@ -73,7 +62,7 @@ void selectionSort(int * arr, size_t size, bool (*predicate)(int, int)) {
     }
 }
 
-void readFileContent(const char * fileName, int * arr, size_t size) {
+void readNumbersFromFile(const char * fileName, int * arr, size_t size) {
     std::ifstream ifs(fileName);
 
     if (!ifs.is_open()) {
@@ -84,10 +73,12 @@ void readFileContent(const char * fileName, int * arr, size_t size) {
     for (size_t i = 0; i < size; i++) {
         ifs >> arr[i];
     }
+
+    ifs.close();
 }
 
 void saveFileContent(const char * fileName, const int * arr, size_t size) {
-        std::ofstream ofs(fileName);
+        std::ofstream ofs(fileName); // no need of clear file method: this line sets the truncate bit to 1
     
         if (!ofs.is_open()) {
             std::cout << "Something went wrong";
@@ -95,13 +86,14 @@ void saveFileContent(const char * fileName, const int * arr, size_t size) {
         }
     
         if (!arr) { // nullptr check
-            clearFileContent(fileName);
             return;
         }
         
         for (size_t i = 0; i < size; i++) {
             ofs << arr[i] << " ";
         }
+
+        ofs.close();
 }
 
 // Create this file so that the program runs properly
@@ -109,7 +101,7 @@ void saveFileContent(const char * fileName, const int * arr, size_t size) {
 int main() {
     size_t size = getNumbersCount("file03.txt");
     int * arr = new int[size];
-    readFileContent("file03.txt", arr, size);
+    readNumbersFromFile("file03.txt", arr, size);
     
     selectionSort(arr, size, ascending);
     saveFileContent("ascending.txt", arr, size);

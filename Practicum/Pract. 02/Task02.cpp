@@ -9,7 +9,7 @@ float calcProd(float num1, float num2, float num3) {
     return num1 * num2 * num3;
 }
 
-float readFileContentDiff(const char * fileName) {
+float readProdAndSumFromFileDiff(const char * fileName) {
     std::ifstream ifs(fileName);
 
     if (!ifs.is_open()) {
@@ -20,6 +20,7 @@ float readFileContentDiff(const char * fileName) {
     float sum, prod;
     ifs >> sum >> prod;
 
+    ifs.close();
     return (sum - prod);
 }
 
@@ -31,6 +32,7 @@ void saveFileContent(const char * fileName, float sum, float prod) {
         return;
     }
     
+    ofs.close();
     ofs << sum << '\n' << prod;
 }
 
@@ -40,5 +42,5 @@ int main() {
 
     saveFileContent("file02.txt", calcSum(num1, num2, num3), calcProd(num1, num2, num3));
 
-    std::cout << readFileContentDiff("file02.txt");
+    std::cout << readProdAndSumFromFileDiff("file02.txt");
 }
