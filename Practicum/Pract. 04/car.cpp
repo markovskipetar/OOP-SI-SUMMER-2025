@@ -39,7 +39,7 @@ public:
 
 	void setBrand(const char* brand)
 	{
-		if (!brand)
+		if (!brand || brand == this->brand)
 		{
 			return;
 		}
@@ -62,7 +62,7 @@ public:
 
 	void setTravels(const int* travels, size_t travelsCount)
 	{
-		if (!travels || travelsCount == 0)
+		if (!travels || travels == this->travels || travelsCount == 0)
 		{
 			return;
 		}
@@ -97,7 +97,7 @@ public:
 		return this->travels;
 	}
 	
-	void saveToBinary(std::ofstream& outFile)
+	void saveToBinary(std::ofstream& outFile) const
 	{
 		size_t brandSize = strlen(brand);
 		outFile.write((const char*)&brandSize, sizeof(size_t));
@@ -110,7 +110,7 @@ public:
 		outFile.write((const char*)travels, sizeof(int) * travelsCount);
 	}
 
-	void saveToBinary(const char* fileName)
+	void saveToBinary(const char* fileName) const
 	{
 		if (!fileName)
 		{
