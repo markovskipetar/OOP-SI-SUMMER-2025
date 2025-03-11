@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cstring>
 #pragma warning(disable:4996)
 
 namespace CONSTANTS
@@ -37,7 +38,7 @@ public:
 
 	void setName(const char* name)
 	{
-		if (!name)
+		if (!name || name == this->name)
 		{
 			return;
 		}
@@ -50,7 +51,7 @@ public:
 
 	void setDesc(const char* desc)
 	{
-		if (!desc)
+		if (!desc || desc == this->desc)
 		{
 			return;
 		}
@@ -81,7 +82,7 @@ public:
 		return points;
 	}
 
-	void writeToFile(std::ofstream& outFile)
+	void writeToFile(std::ofstream& outFile) const
 	{
 		size_t nameSize = strlen(name);
 		outFile.write((const char*)&nameSize, sizeof(size_t));
@@ -94,7 +95,7 @@ public:
 		outFile.write((const char*)&points, sizeof(unsigned));
 	}
 
-	void writeToFile(const char* fileName)
+	void writeToFile(const char* fileName) const
 	{
 		if (!fileName)
 		{
@@ -198,7 +199,7 @@ public:
 		return total;
 	}
 
-	void writeToFile(std::ofstream& outFile)
+	void writeToFile(std::ofstream& outFile) const
 	{
 		outFile.write((const char*)&tasksSize, sizeof(size_t));
 		for (size_t i = 0; i < tasksSize; i++)
@@ -207,7 +208,7 @@ public:
 		}
 	}
 
-	void writeToFile(const char* fileName)
+	void writeToFile(const char* fileName) const
 	{
 		if (!fileName)
 		{
