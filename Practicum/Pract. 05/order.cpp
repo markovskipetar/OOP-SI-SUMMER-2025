@@ -1,9 +1,15 @@
 #include <iostream>
 #pragma warning(disable:4996)
 
+
+namespace CONSTANTS
+{
+	constexpr size_t NAME_MAX_SIZE = 30;
+}
+
 struct Item 
 {
-	char name[30] = "Unknown";
+	char name[CONSTANTS::NAME_MAX_SIZE + 1] = "Unknown";
 	int code = 0;
 
 	Item() = default;
@@ -98,6 +104,8 @@ private:
 
 		this->capacity = roundToPowerOfTwo(itemsSize);
 		this->size = itemsSize;
+
+		//delete[] this->items for reusability
 		this->items = new Item[this->capacity];
 
 		for (size_t i = 0; i < itemsSize; i++)
