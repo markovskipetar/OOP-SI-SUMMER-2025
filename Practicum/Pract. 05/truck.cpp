@@ -209,7 +209,7 @@ private:
 			return;
 		}
 
-		delete[] this->brand; //in case setBrand is called twice (making it universal)
+		//delete[] this->brand; for reusability
 		this->brand = new char[strlen(brand) + 1] {};
 		strcpy(this->brand, brand);
 	}
