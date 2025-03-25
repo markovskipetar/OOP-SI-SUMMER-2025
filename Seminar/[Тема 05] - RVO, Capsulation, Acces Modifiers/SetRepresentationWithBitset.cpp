@@ -25,11 +25,35 @@ public:
 		}
 	}
 
+	int getBuckets() const
+	{
+		return buckets;
+	}
+
+	int getMaxElement() const
+	{
+		return maxElement;
+	}
+
+	const uint8_t* getBitset() const
+	{
+		return bitset;
+	}
+
 	void add(int element)
 	{
-		// TO DO: ADD resize and validation
+		if (element < 0)
+		{
+			std::cout << "cannot add less than 0";
+			return;
+		}
 
-		int bucket = getBucket(element);
+		if (element > maxElement)
+		{
+			resize(element);
+		}
+
+		int bucket = getBucketIndex(element);
 		int indexInBucket = getIndexInBucket(element);
 
 		uint8_t mask = Constants::leftmostBit;
@@ -40,9 +64,13 @@ public:
 
 	void remove(int element)
 	{
-		// TO DO: ADD validation
+		if (element < 0 || element > maxElement)
+		{
+			std::cout << "invalid element";
+			return;
+		}
 
-		int bucket = getBucket(element);
+		int bucket = getBucketIndex(element);
 		int indexInBucket = getIndexInBucket(element);
 
 		uint8_t mask = Constants::leftmostBit;
@@ -52,9 +80,55 @@ public:
 		bitset[bucket] = (bitset[bucket] & mask);
 	}
 
-	// TO DO: add complement()
-	// TO DO: add intersect()
-	// TO DO: add union()
+	void intersectWith(const Set& other)
+	{
+		int otherBuckets = other.getBuckets();
+
+		if (otherBuckets > buckets)
+		{
+			resize(other.getMaxElement());
+		}
+
+		const uint8_t* otherBitset = other.getBitset();
+
+		for (int i = 0; i < std::min(buckets, otherBuckets); i++)
+		{
+			bitset[i] = (bitset[i] & otherBitset[i]);
+		}
+
+		if (buckets > otherBuckets)
+		{
+			for (int i = otherBuckets; i < buckets; i++)
+			{
+				bitset[i] = 0;
+			}
+		}
+	}
+
+	void unionWith(const Set& other)
+	{
+		int otherBuckets = other.getBuckets();
+
+		if (otherBuckets > buckets)
+		{
+			resize(other.getMaxElement());
+		}
+
+		const uint8_t* otherBitset = other.getBitset();
+
+		for (int i = 0; i < std::min(buckets, otherBuckets); i++)
+		{
+			bitset[i] = (bitset[i] | otherBitset[i]);
+		}
+	}
+
+	void makeComplement()
+	{
+		for (int i = 0; i < buckets; i++)
+		{
+			bitset[i] = (~bitset[i]);
+		}
+	}
 
 	void print() const
 	{
@@ -101,14 +175,38 @@ private:
 		return false;
 	}
 
+	void resize(int newMaxElement)
+	{
+		int newBuckets = calculateRequiredBuckets(newMaxElement);
+
+		maxElement = newMaxElement;
+
+		uint8_t* newBitset = new uint8_t[newBuckets]{ 0 };
+
+		for (int i = 0; i < buckets; i++)
+		{
+			newBitset[i] = bitset[i];
+		}
+
+		buckets = newBuckets;
+
+		delete[] bitset;
+		bitset = newBitset;
+	}
+
+	int calculateRequiredBuckets(int maxElement) const
+	{
+		return maxElement / Constants::elementsInBucket + 1;
+	}
+
 	void initializeBitset(int maxElement)
 	{
-		buckets = maxElement / Constants::elementsInBucket + 1;
+		buckets = calculateRequiredBuckets(maxElement);
 
 		bitset = new uint8_t[buckets]{ 0 };
 	}
 
-	int getBucket(int element) const
+	int getBucketIndex(int element) const
 	{
 		return element / Constants::elementsInBucket;
 	}
@@ -121,17 +219,21 @@ private:
 
 int main()
 {
-	Set s(10);
+	Set s1(10);
+	s1.add(4);
+	s1.add(5);
+	s1.add(6);
+	s1.add(7);
+	s1.add(8);
 
-	s.add(5);
-	s.add(8);
-	s.add(2);
+	Set s2(5);
+	s2.add(7);
+	s2.add(8);
+	s2.add(9);
 
-	s.print();
+	s2.unionWith(s1);
+	s2.print(); std::cout << std::endl;
 
-	s.remove(8);
-
-	std::cout << std::endl;
-
-	s.print();
+	s2.makeComplement();
+	s2.print();
 }
