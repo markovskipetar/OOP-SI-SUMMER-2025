@@ -125,6 +125,8 @@ void Vector::writeToBinaryFile(std::ofstream& binaryWriter) const
 
 void Vector::readFromBinaryFile(std::ifstream& binaryReader)
 {
+	delete[] components;
+	
 	if (!binaryReader.is_open())
 	{
 		return;
