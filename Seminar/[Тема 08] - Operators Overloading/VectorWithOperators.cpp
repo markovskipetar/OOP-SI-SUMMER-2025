@@ -171,7 +171,7 @@ bool operator||(const Vector& lhs, const Vector& rhs)
 	const double* lhsComponents = lhs.getComponents();
 	const double* rhsComponents = rhs.getComponents();
 
-	double initialRation = lhsComponents[0] / rhsComponents[0];
+	double initialRatio = lhsComponents[0] / rhsComponents[0];
 
 	const double EPSILON = 0.00000001;
 
@@ -179,7 +179,7 @@ bool operator||(const Vector& lhs, const Vector& rhs)
 	{
 		double currentRation = lhsComponents[i] / rhsComponents[i];
 
-		if (std::abs(currentRation - initialRation) > EPSILON)
+		if (std::abs(currentRation - initialRatio) > EPSILON)
 		{
 			return false;
 		}
