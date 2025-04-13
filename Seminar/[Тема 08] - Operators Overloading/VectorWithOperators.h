@@ -43,4 +43,4 @@ Vector operator+(const Vector& lhs, const Vector& rhs);
 bool operator||(const Vector& lhs, const Vector& rhs);
 
 std::ostream& operator<< (std::ofstream& outputStream, const Vector& vector);
-std::istream& operator>> (std::istream& outputStream, const Vector& vector);
+std::istream& operator>> (std::istream& inputStream, const Vector& vector);
