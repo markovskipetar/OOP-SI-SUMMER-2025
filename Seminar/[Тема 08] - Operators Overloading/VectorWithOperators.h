@@ -24,7 +24,6 @@ public:
 	Vector& operator++();
 	Vector operator++(int);
 
-
 	friend std::istream& operator>> (std::istream& outputStream, const Vector& vector);
 
 private:
