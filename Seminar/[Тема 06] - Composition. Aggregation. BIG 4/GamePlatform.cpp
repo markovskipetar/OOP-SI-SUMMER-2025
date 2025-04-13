@@ -55,8 +55,8 @@ public:
 		return price == 0;
 	}
 
-	void writeGameToFile(std::ofstream& file) {
-
+	void writeGameToFile(std::ofstream& file)
+	{
 		int sizeOfTitle = strlen(title);
 
 		file.write((const char*)&sizeOfTitle, sizeof(int));
@@ -67,9 +67,9 @@ public:
 
 	}
 
-	void readGameFromFile(std::ifstream& file) {
-
-		delete[] title;
+	void readGameFromFile(std::ifstream& file)
+	{
+		free();
 
 		int sizeOfTitle = 0;
 
@@ -99,7 +99,6 @@ public:
 	}
 
 private:
-
 	void setTitle(const char* title)
 	{
 		if (!title || this->title == title)
@@ -166,15 +165,15 @@ public:
 		copyFrom(other);
 	}
 
-	GamePlatform& operator = (const GamePlatform& other)
+	GamePlatform& operator= (const GamePlatform& other)
 	{
 		if (this != &other)
 		{
 			free();
 			copyFrom(other);
 		}
-		return *this;
 
+		return *this;
 	}
 
 	~GamePlatform()
@@ -270,7 +269,6 @@ public:
 				index = i;
 				currentPrice = games[i].getPrice();
 			}
-
 		}
 
 		printGameByIndex(index);
@@ -280,7 +278,10 @@ public:
 	{
 		for (int i = 0; i < countOfGames; i++)
 		{
-			if (games[i].isFree()) printGameByIndex(i);
+			if (games[i].isFree())
+			{
+				printGameByIndex(i);
+			}
 		}
 	}
 
@@ -295,7 +296,7 @@ public:
 
 		file.write((const char*)&countOfGames, sizeof(int));
 
-		for (int i = 0; i < countOfGames; i++) 
+		for (int i = 0; i < countOfGames; i++)
 		{
 			games[i].writeGameToFile(file);
 		}
@@ -309,7 +310,7 @@ public:
 
 		std::ifstream file(fileName, std::ios::binary);
 
-		if (!file.is_open()) 
+		if (!file.is_open())
 		{
 			return;
 		}
@@ -319,7 +320,7 @@ public:
 		games = new Game[countOfGames];
 		capacity = countOfGames;
 
-		for (int i = 0; i < countOfGames; i++) 
+		for (int i = 0; i < countOfGames; i++)
 		{
 			games[i].readGameFromFile(file);
 		}
@@ -339,7 +340,7 @@ private:
 		capacity = other.capacity;
 		countOfGames = other.countOfGames;
 
-		for (int i = 0; i < countOfGames; i++) 
+		for (int i = 0; i < countOfGames; i++)
 		{
 			games[i] = other.games[i];
 		}
@@ -359,7 +360,7 @@ private:
 
 		Game* newGames = new Game[newCapacity];
 
-		for (int i = 0; i < countOfGames; i++) 
+		for (int i = 0; i < countOfGames; i++)
 		{
 			newGames[i] = games[i];
 		}
