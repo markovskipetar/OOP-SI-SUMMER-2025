@@ -17,6 +17,8 @@
 
  - const char* c_str() const – връща C-style представяне на стринга.
 
+ - MyString substr(unsigned startIndex, unsigned len) const - връща подстринг на нашия.
+
 Оператори:
  - char& operator[](size_t index) и const char& operator[](size_t index) const – достъп до символ по индекс (с/без модификация).
 
