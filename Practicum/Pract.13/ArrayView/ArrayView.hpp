@@ -36,26 +36,26 @@ ArrayView<char>::ArrayView(const char* arr) : ArrayView(arr, strlen(arr)) {}
 
 template <typename T>
 const T& ArrayView<T>::operator[](size_t index) const
-{
-	return *(begin + index);
+{	
+ 	return begin[index];
 }
 
 template <typename T>
 size_t ArrayView<T>::getSize() const
 {
-	return (end - begin);
+	return end - begin;
 }
 
 template <typename T>
 bool ArrayView<T>::isEmpty() const
 {
-	return (getSize() == 0);
+	return getSize() == 0;
 }
 
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const ArrayView<T>& view)
+template <typename F>
+std::ostream& operator<<(std::ostream& os, const ArrayView<F>& view)
 {
-	const T* iter = view.begin;
+	const F* iter = view.begin;
 
 	while (iter != view.end)
 	{
@@ -71,7 +71,7 @@ ArrayView<T> ArrayView<T>::subArr(unsigned beginIndex) const
 {
 	if (beginIndex > getSize())
 	{
-		throw std::invalid_argument("Cannot create subview...");
+		throw std::invalid_argument("Cannot create subview with larger starting index than the original view");
 	}
 
 	return ArrayView<T>(begin + beginIndex, getSize() - beginIndex);
@@ -82,7 +82,7 @@ ArrayView<T> ArrayView<T>::subArr(unsigned beginIndex, size_t size) const
 {
 	if (beginIndex + size > getSize())
 	{
-		throw std::invalid_argument("Cannot create subview...");
+		throw std::invalid_argument("Cannot create subview with larger scope than the original view");
 	}
 
 	return ArrayView<T>(begin + beginIndex, size);
